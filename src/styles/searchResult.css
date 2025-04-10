@@ -1,0 +1,20 @@
+.secondary-choice-song
+{
+  padding-right: 20%;
+  color:yellow;
+}
+.primary-choice-song
+{
+  padding-right: 20%;
+  color: green;
+}
+.choice-div
+{
+  display: flex;
+  justify-content: space-between;
+}
+
+*
+{
+  color: white;
+}

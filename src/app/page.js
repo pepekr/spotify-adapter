@@ -1,95 +1,249 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
+import React, { useEffect, useRef, useState } from "react";
+import "../styles/HomeStyles.css";
 
-export default function Home() {
+function Home() {
+  const limit = 100;
+  const [data, setData] = useState([]);
+  const [isAuthorized, setIsAuthorized] = useState(true);
+  const [showUnathorized, setShowUnAthorized] = useState(false);
+  const [isLimit, setIsLimit] = useState(false);
+  const inputElement = useRef();
+  useEffect(() => {
+    const checkAuthorization = async () => {
+      try {
+        const response = await fetch("api/authCheck", {
+          method: 'GET',
+        });
+        if (!response.ok) {
+          setIsAuthorized(false);
+        }
+      } catch (error) {
+        console.error('Error checking authorization:', error);
+        setIsAuthorized(false);
+      }
+    };
+
+    checkAuthorization(); // Call the async function
+  }, []);
+  useEffect(()=>
+    {
+      console.log(showUnathorized);
+    },[])
+  const handleDragEvents = (event) => {
+    event.preventDefault();
+    console.log("DRAG");
+  };
+
+  const handleDrop = async (event) => {
+    event.preventDefault();
+    console.log("handle drop is runnning")
+    const mainArray = [];
+    const items = event.dataTransfer.items;
+    console.log(items.length);
+    console.log("SUMMURRY",items.length+data.length)
+  
+    if(items.length+data.length>limit)
+      {
+        console.log("LIMIT");
+        console.log(items.length)
+        console.log("DATA",data.length)
+        setIsLimit(true);
+      }
+      else{
+    const dataPromises = Array.from(items).map((item) => {
+      const entry = item.webkitGetAsEntry();
+      
+      if (entry && entry.isFile) {
+        item.type === "audio/mp3" || item.type === "audio/mpeg" || item.type === "audio/x-m4a"
+          ? mainArray.push(item.getAsFile())
+          : console.log(item.type); // CREATE A MESSAGE
+      
+      } else if (entry && entry.isDirectory) {
+        const dirReader = entry.createReader();
+        return scanDirectory(dirReader, mainArray);
+      }
+    });
+    await Promise.all(dataPromises);
+    setData((prevData) => [...prevData, ...mainArray]);
+    console.log(data.length);
+  }
+  };
+
+  const handleFileSelection = (event) => {
+
+    const selectedFiles = event.target.files; 
+    const mainArray = [];
+  
+    console.log("Selected files:", selectedFiles.length);
+  
+
+    if (selectedFiles.length + data.length > limit) {
+      console.log("LIMIT EXCEEDED");
+      setIsLimit(true);
+    } else {
+      Array.from(selectedFiles).forEach((file) => {
+        if (file.type === "audio/mp3" || file.type === "audio/mpeg" || file.type === "audio/x-m4a") {
+          mainArray.push(file);
+        } else {
+          console.log(`Unsupported file type: ${file.type}`);
+        }
+      });
+  
+
+      setData((prevData) => [...prevData, ...mainArray]);
+      console.log(data.length);
+    }
+  };
+
+  const unauthorizedDrop = (event)=>
+    {
+
+      event.preventDefault();
+      console.log("dropping")
+      setShowUnAthorized(true);
+    }
+  const scanDirectory = (dirReader, mainArray) => {
+    return new Promise(async (resolve) => {
+      dirReader.readEntries(async (entries) => {
+        const dirPromises = Array.from(entries).map((entry) => {
+          if (entry && entry.isFile) {
+            return new Promise((resolve) => {
+              entry.file((file) => {
+                if (file.type === "audio/mp3") {
+                  mainArray.push(file);
+                } else {
+                  console.log("Files needs to be an mp3 ");
+                }
+                resolve();
+              });
+            });
+          } else if (entry && entry.isDirectory) {
+            return scanDirectory(entry.createReader(), mainArray);
+          }
+        });
+        await Promise.all(dirPromises);
+        resolve();
+      });
+    });
+  };
+ const bytesToMb = (bNumber)=>
+ {
+    try {
+
+     return bNumber/1000000
+
+    } catch (error) {
+      console.log($`Error during converting bytes to mb ${error}`)
+      return "Error"
+    }
+
+ }
+ const randomBackground = (index)=>
+ {
+  const colorArray = []
+  return colorArray[index%(colorArray.length-1)]
+ }
+  const handleDelete = (event, name) => {
+    
+    event.preventDefault();
+    const files = data.filter((item) => item.name !== name);
+    setData(files);
+    data.length<=limit?setIsLimit(false):"";
+  };
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (data.length<=0)
+      {
+        console.log("Nothing to search");
+        return;
+      }
+    const formData = new FormData();
+    data.forEach((dataEl, index) => {
+      formData.append(`file${index}:`, dataEl);
+    });
+
+    try {
+      const response = await fetch("/api/search", {
+        method: "POST",
+        body: formData,
+      });
+      console.log(response);
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.log("Error Response:", errorText);
+        setIsAuthorized(false);
+        setShowUnAthorized(true);
+      } else {
+        console.log("running");
+        const responseJson = await response.json();
+
+        sessionStorage.setItem("searched_songs", JSON.stringify(responseJson));
+        console.log(responseJson);
+        window.location.replace("/searchResult");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <div className="home">
+      {isLimit &&(<p className="board-hint">The limit is {limit} files</p>)}
+      {showUnathorized && 
+        <div onDrop = {unauthorizedDrop} onDragOver={handleDragEvents} className="unauthorized-box">
+            <p className="unauthorized-message">Please authorize first</p>
+            <button className="unauthorized-btn" onClick={()=>setShowUnAthorized(false)}>Ok</button>
+        </div>}
+
+      <div className={`main-container ${data.length>0?"main-container-songs":""}`}>
+
+
+      {data.length>0 && <ul className="search-list">{data.map((song, index)=>
+        {
+          return   <li className="search-item" key={index}>
+          <p className="file-name search-item-part">{song.name.slice(0,34)}{song.name.length>34?"...":""}</p>
+          <p className="file-size search-item-part">{bytesToMb(song.size).toPrecision(3)} mb </p>
+          <p className="delete-button search-item-part" onClick={(event) => handleDelete(event, song.name)}>X</p>
+          
+        </li>
+        })}</ul>}  
+
+
+       
+     <div 
+      className={`container-board ${data.length > 0 ? "hidden" : ""}`  }
+      hidden = {data.length>0?true:false} 
+      onDrop={isAuthorized?handleDrop:()=>setShowUnAthorized(true)}
+      onDragOver={handleDragEvents}  
+      >
+         <label className="drop-label" 
+                htmlFor = "song-input">
+                <p>Choose or drop your files here</p> 
+                <input accept="audio/mpeg, audio/mp3, audio/x-m4a" 
+                type="file" id="song-input"
+                onInput={isAuthorized?handleFileSelection:()=>setShowUnAthorized(true)} 
+                ref={inputElement} multiple>
+                </input>
+
+         </label>
+
         </div>
+
       </div>
+      
+      <div className="button-container">
+        <button onClick={()=>{isAuthorized?inputElement.current.click():()=>setShowUnAthorized(true)}}>Add more Files</button>
+        <button onClick={handleSubmit} className="button-search">
+          Search it!
+        </button>
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
+        </div>
+     
       </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+  
   );
 }
+
+export default Home;
+ 
+// дотестити ліміт  
