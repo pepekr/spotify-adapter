@@ -20,7 +20,8 @@ button
     display: flex;
     align-items: center;
     background-color: hsl(0, 0%, 14%);
-    flex-wrap: wrap;    
+    flex-wrap: wrap; 
+    box-sizing: border-box;   
 }
 
 

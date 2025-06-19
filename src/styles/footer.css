@@ -15,6 +15,7 @@
     background-color: hsl(0, 0%, 14%);
     flex-wrap: wrap; 
     justify-content: space-around;
+    box-sizing: border-box;
 }
 .footer > *
 {

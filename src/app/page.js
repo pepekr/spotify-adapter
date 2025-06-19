@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import "../styles/HomeStyles.css";
-
+import {song_colors} from "./constants.js"; // Assuming you have a JSON file with colors
 function Home() {
   const limit = 100;
   const [data, setData] = useState([]);
@@ -200,7 +200,7 @@ function Home() {
 
       {data.length>0 && <ul className="search-list">{data.map((song, index)=>
         {
-          return   <li className="search-item" key={index}>
+          return   <li className="search-item" style = {{backgroundColor:song_colors[index%song_colors.length]}} key={index}>
           <p className="file-name search-item-part">{song.name.slice(0,34)}{song.name.length>34?"...":""}</p>
           <p className="file-size search-item-part">{bytesToMb(song.size).toPrecision(3)} mb </p>
           <p className="delete-button search-item-part" onClick={(event) => handleDelete(event, song.name)}>X</p>
