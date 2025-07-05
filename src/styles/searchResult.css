@@ -1,20 +1,103 @@
+
+.search-result-container
+{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
 .secondary-choice-song
 {
   padding-right: 20%;
-  color:yellow;
+  color:rgb(235, 235, 68);
 }
 .primary-choice-song
 {
   padding-right: 20%;
-  color: green;
-}
-.choice-div
-{
-  display: flex;
-  justify-content: space-between;
+  color: rgb(6, 191, 6);
 }
 
-*
+* 
 {
   color: white;
+}
+.search-list
+{
+  box-sizing: border-box;
+  margin-top: 1%;
+  font-size: 0.8rem;
+  box-sizing: border-box;
+  overflow: scroll;
+  width: 60%;
+  height: 70%;
+  min-height: 0;
+}
+.search-item
+{
+  box-sizing: border-box;
+  height: 15%;
+  padding: 1em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+  margin-bottom: 0.5%;
+}
+.search-item:hover
+{
+  transform: scale(1.03);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.search-item-part
+{
+  position: relative;
+  font-size: 1.3rem;
+  padding: 20px;
+  margin-right: 10px;
+  margin-left: 10px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.song-checkbox
+{
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+  color: white;
+}
+.button-container
+{
+  top: 75%;
+  display: flex;
+  position: sticky;
+  width: 60%;
+  justify-content: center;
+  padding: 10px;
+}
+.create-playlist-button
+{
+  width: 65%;
+  height: 50px;
+  background-color: #FF70EA;
+  color: white;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+.create-playlist-button:hover
+{
+  
+  background-color: #F92EAA;
+}
+.song-count
+{
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35%;
+  background-color: #F92EAA;
 }
