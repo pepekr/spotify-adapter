@@ -9,7 +9,8 @@
     -webkit-tap-highlight-color: transparent;
 }
 .footer
-{   height: 10vh;
+{   flex: 0 0 auto; /* footer will not grow or shrink, it will be fixed height */
+    height: 10vh;
     display: flex;
     align-items: center;
     background-color: hsl(0, 0%, 14%);

@@ -232,7 +232,7 @@ function Home() {
       </div>
       
       <div className="button-container">
-        <button onClick={()=>{isAuthorized?inputElement.current.click():()=>setShowUnAthorized(true)}}>Add more Files</button>
+        <button className="add-more-files" onClick={()=>{isAuthorized?inputElement.current.click():()=>setShowUnAthorized(true)}}>Add more Files</button>
         <button onClick={handleSubmit} className="button-search">
           Search it!
         </button>

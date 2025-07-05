@@ -4,14 +4,12 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  padding: 0;
+
   font-family: TimesNewRoman, Times New Roman, Times, Baskerville, Georgia,serif;
   -webkit-tap-highlight-color: transparent; /* Safari, iOS Safari */
   -webkit-tap-highlight-color: rgba(0,0,0,0 ); /* Old Android Chrome up to 4.4 */
   -webkit-tap-highlight-color: transparent;
   font-size: 1rem;
- 
-  
 }
 html, body {
   width: 100%;
@@ -31,18 +29,22 @@ html, body {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  box-sizing: border-box;
+  /* flex: 0 1 auto; */
 }
 .main-container
 {
+  overflow: hidden;
+  box-sizing: border-box;
   width: 100%;
-  height: 100%;
+  height: 85%;
   display: flex;
   justify-content: center;
   align-items: center;
+  flex: 0 1 auto;  /*so it will not grow or shrink, it will be fixed height*/
 }
 .main-container-songs
 {
-  height: 74vh;
   align-items: normal;
 }
 
@@ -69,6 +71,7 @@ html, body {
 .container-board
 {
   display: flex;
+  /* flex-grow: 0; */
   aspect-ratio: 949 / 542;
   width: 400px;
   border: 5px solid rgb(214, 205, 205);
@@ -80,10 +83,14 @@ html, body {
   box-sizing: border-box;
   overflow: scroll;
   width: 60%;
+  /* flex-shrink: 1; */
+  /* flex-grow: 0; */
+  min-height: 0;
+  /* margin: 0 auto; */
 }
 .search-item
 {
-  height: 13%;
+  height: 15%;
   padding: 1em;
   display: flex;
   justify-content: space-around;
@@ -125,6 +132,11 @@ html, body {
 }
 .button-container
 {
+  display: flex;
   position: sticky;
-  
+
+}
+.add-more-files
+{
+
 }
