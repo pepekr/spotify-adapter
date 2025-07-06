@@ -268,12 +268,12 @@ const searchForTracks = async (metadataArray, access_token) => {
             };
           } else {
             console.log("no match");
-            return "no match";
+            return {isMatched: false, originalFileTitle: null};
           }
         }
       );
 
-      return arrayOfSearchedOptions;
+      return {name:  file.title|| file.fileName, options: arrayOfSearchedOptions};
     }
   });
   const fullfilledSongsSearchResult = await Promise.all(

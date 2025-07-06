@@ -10,7 +10,6 @@ function searchResult() {
   const isCreated = useRef();
   const router = useRouter();
   useEffect(() => {
-    console.log("RELOAD");
     if (JSON.parse(sessionStorage.getItem("searched_songs")).length > 0) {
       setSearchedSongs(JSON.parse(sessionStorage.getItem("searched_songs")));
     }
@@ -20,9 +19,6 @@ function searchResult() {
       preloadSongs();
     }
   }, [searchedSongs]);
-  useEffect(() => {
-    console.log("LENGTH" + choosedSongsIndexes.length);
-  }, [choosedSongsIndexes, preloadSongs]);
 
   return (
     <div className="search-result-container">
@@ -31,46 +27,56 @@ function searchResult() {
       )}
       {searchedSongs.length > 0 && (
         <ul className="search-list">
-          {searchedSongs.map((songOptionsArray, mainSongIndex) => {
-            const array = songOptionsArray.map((songOptionObject, index) => {
+          {searchedSongs.map((songResults, mainSongIndex) => {
+            const array = songResults.options.map((songOptionObject, index) => {
+              if (
+                songOptionObject.isMatched === null &&
+                songOptionObject.originalFileTitle === null
+              ) {
+                return null;
+              }
               const check = searchAdded(mainSongIndex, index);
               return (
-                <li
-                  onClick={() => {
-                    choosedSongsIndexes.length < songsLimit && !searchAdded(mainSongIndex, index)
-                      ? addSong(mainSongIndex, index)
-                      : removeSong(mainSongIndex, index);
-                  }}
-                  style={{
-                    backgroundColor: song_colors[index % song_colors.length],
-                  }}
-                  className={"search-item"}
-                  key={index}
-                >
-                  <p
-                    className={`search-item-part ${
-                      songOptionObject.isMatched
-                        ? "primary-choice-song"
-                        : "secondary-choice-song"
-                    }`}
-                  >
-                    {" "}
-                    {songOptionObject.searchObjectName}
-                  </p>
-
-                  <input
-                    className="search-item-part song-checkbox"
-                    key={index}
-                    type="checkbox"
-                    checked={check}
-                    onChange={(event) => {
-                      event.target.checked &&
-                      choosedSongsIndexes.length < songsLimit
+                <React.Fragment key={`${mainSongIndex}-${index}`}>
+                  {index === 0 && <div>{songResults.name}</div>}
+                  <li
+                    onClick={() => {
+                      choosedSongsIndexes.length < songsLimit &&
+                      !searchAdded(mainSongIndex, index)
                         ? addSong(mainSongIndex, index)
                         : removeSong(mainSongIndex, index);
                     }}
-                  ></input>
-                </li>
+                    style={{
+                      backgroundColor: song_colors[index % song_colors.length],
+                    }}
+                    className={"search-item"}
+                    key={index}
+                  >
+                    <p
+                      className={`search-item-part ${
+                        songOptionObject.isMatched
+                          ? "primary-choice-song"
+                          : "secondary-choice-song"
+                      }`}
+                    >
+                      {" "}
+                      {songOptionObject.searchObjectName}
+                    </p>
+
+                    <input
+                      className="search-item-part song-checkbox"
+                      key={index}
+                      type="checkbox"
+                      checked={check}
+                      onChange={(event) => {
+                        event.target.checked &&
+                        choosedSongsIndexes.length < songsLimit
+                          ? addSong(mainSongIndex, index)
+                          : removeSong(mainSongIndex, index);
+                      }}
+                    ></input>
+                  </li>
+                </React.Fragment>
               );
             });
             console.log(array);
@@ -122,7 +128,7 @@ function searchResult() {
   }
   function createFinalArray() {
     const array = choosedSongsIndexes.map((coords) => {
-      return searchedSongs[coords[0]][coords[1]].trackId;
+      return searchedSongs[coords[0]][coords[1]].options.trackId;
     });
     return array;
   }
@@ -148,8 +154,8 @@ function searchResult() {
     }
   }
   function preloadSongs() {
-    searchedSongs.forEach((oneSongChoices, mainIndex) => {
-      oneSongChoices.forEach((el, index) => {
+    searchedSongs.forEach((oneSongResult, mainIndex) => {
+      oneSongResult.options.forEach((el, index) => {
         if (el.isMatched && choosedSongsIndexes < songsLimit) {
           setchoosedSongsIndexes((prevSongs) => [
             ...prevSongs,
