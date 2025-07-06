@@ -26,63 +26,73 @@ function searchResult() {
         <p>The limit is {songsLimit}</p>
       )}
       {searchedSongs.length > 0 && (
-        <ul className="search-list">
-          {searchedSongs.map((songResults, mainSongIndex) => {
-            const array = songResults.options.map((songOptionObject, index) => {
-              if (
-                songOptionObject.isMatched === null &&
-                songOptionObject.originalFileTitle === null
-              ) {
-                return null;
-              }
-              const check = searchAdded(mainSongIndex, index);
-              return (
-                <React.Fragment key={`${mainSongIndex}-${index}`}>
-                  {index === 0 && <div>{songResults.name}</div>}
-                  <li
-                    onClick={() => {
-                      choosedSongsIndexes.length < songsLimit &&
-                      !searchAdded(mainSongIndex, index)
-                        ? addSong(mainSongIndex, index)
-                        : removeSong(mainSongIndex, index);
-                    }}
-                    style={{
-                      backgroundColor: song_colors[index % song_colors.length],
-                    }}
-                    className={"search-item"}
-                    key={index}
-                  >
-                    <p
-                      className={`search-item-part ${
-                        songOptionObject.isMatched
-                          ? "primary-choice-song"
-                          : "secondary-choice-song"
-                      }`}
-                    >
-                      {" "}
-                      {songOptionObject.searchObjectName}
-                    </p>
+        <>
+          <label htmlFor="inp" className="inp">
+            <input type="text" id="inp" placeholder="&nbsp;" />
+            <span className="label">Title</span>
+            <span className="focus-bg"></span>
+          </label>
+          <ul className="search-list">
+            {searchedSongs.map((songResults, mainSongIndex) => {
+              const array = songResults.options.map(
+                (songOptionObject, index) => {
+                  if (
+                    songOptionObject.isMatched === null &&
+                    songOptionObject.originalFileTitle === null
+                  ) {
+                    return null;
+                  }
+                  const check = searchAdded(mainSongIndex, index);
+                  return (
+                    <React.Fragment key={`${mainSongIndex}-${index}`}>
+                      {index === 0 && <div className="org-song-name">{songResults.name}</div>}
+                      <li
+                        onClick={() => {
+                          choosedSongsIndexes.length < songsLimit &&
+                          !searchAdded(mainSongIndex, index)
+                            ? addSong(mainSongIndex, index)
+                            : removeSong(mainSongIndex, index);
+                        }}
+                        style={{
+                          backgroundColor:
+                            song_colors[index % song_colors.length],
+                        }}
+                        className={"search-item"}
+                        key={index}
+                      >
+                        <p
+                          className={`search-item-part ${
+                            songOptionObject.isMatched
+                              ? "primary-choice-song"
+                              : "secondary-choice-song"
+                          }`}
+                        >
+                          {" "}
+                          {songOptionObject.searchObjectName}
+                        </p>
 
-                    <input
-                      className="search-item-part song-checkbox"
-                      key={index}
-                      type="checkbox"
-                      checked={check}
-                      onChange={(event) => {
-                        event.target.checked &&
-                        choosedSongsIndexes.length < songsLimit
-                          ? addSong(mainSongIndex, index)
-                          : removeSong(mainSongIndex, index);
-                      }}
-                    ></input>
-                  </li>
-                </React.Fragment>
+                        <input
+                          className="search-item-part song-checkbox"
+                          key={index}
+                          type="checkbox"
+                          checked={check}
+                          onChange={(event) => {
+                            event.target.checked &&
+                            choosedSongsIndexes.length < songsLimit
+                              ? addSong(mainSongIndex, index)
+                              : removeSong(mainSongIndex, index);
+                          }}
+                        ></input>
+                      </li>
+                    </React.Fragment>
+                  );
+                }
               );
-            });
-            console.log(array);
-            return array;
-          })}
-        </ul>
+              console.log(array);
+              return array;
+            })}
+          </ul>
+        </>
       )}
       <div className="button-container">
         <span className="song-count">Songs: {choosedSongsIndexes.length}</span>
