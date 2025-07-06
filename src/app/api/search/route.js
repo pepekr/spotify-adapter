@@ -1,24 +1,10 @@
-// src/app/api/search/route.js
-//i wont need to fetch token it will be store in cookie so need to clean up it and leave only hadlinn files
-// add token fetch from cookie
-// in front i need to create block to search button if refresh token is not in cookie
-// if its in cookie we re starting search end point and cheking access token for expiration
-
-/*Tasks: 
-handle my array of arrays of objects [ [{},{},{}], [{},{},{}] ] to:
-a) main page
-    a.1) render new block of code
-    a.2) redirect to new page with this info
-b) store it in session storage (not sensetive info) // choosed it 
-c) make another api endpoint -> give this endpoint info -> return search 
-->make redirect to another page -> display this info - make request to new endpoint -> display info  */
 import { parseBlob } from "music-metadata";
 import { cookies } from "next/headers";
 export async function POST(req) {
   const files = [];
   const metadataArray = [];
   const searchedSongs = [];
-  const cookieStorage = cookies();
+  const cookieStorage = await cookies();
   let access_token = cookieStorage.get("access_token");
   const refresh_token = cookieStorage.get("refresh_token");
   console.log("REFRESH TOKEN",refresh_token);
@@ -45,8 +31,6 @@ export async function POST(req) {
 ///Handling request: takes formdata "file{index}:file" and parses it to an array
 const handleFiles = async (req, files, metadataArray, access_token) => {
   try {
-    console.log("TEST IN SEARCH.js !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-    console.log(access_token);
     const formData = await req.formData();
     
     formData.forEach((value) => {
@@ -58,13 +42,15 @@ const handleFiles = async (req, files, metadataArray, access_token) => {
         console.log(`NO FILES FOR HANDLING: ${error}`);
         return new Response("BAD", { status: 500, message: "NO FILES FOR HANDLING" })
       }
-    console.log(metadataArray);
+ 
     await handleMetadata(files, metadataArray);
-    console.log(metadataArray);
+    
     const searchedSongsResult = await searchForTracks(
       metadataArray,
       access_token
     );
+   
+    console.log(searchedSongsResult);
     return new Response(JSON.stringify(searchedSongsResult), {
       status: 200,
     });
@@ -78,15 +64,11 @@ const handleFiles = async (req, files, metadataArray, access_token) => {
 /// promise.all waiting for all prommise to resolve
 /// push values in an array
 const handleMetadata = async (files, metadataArray) => {
-  console.log("TEST IN SEARCH.JS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
   console.log(metadataArray);
   const arrayOfMetaData = files.map(async (file) => {
     const fileMetadata = await parseBlob(file);
     console.log(fileMetadata);
-    let artists;
-    const artistsArray = fileMetadata.common.artists.filter(Boolean);
-    console.log(artistsArray);
-    const artistArray = [fileMetadata.common.artists].filter(Boolean);
+    const artistsArray = fileMetadata.common?.artists?.filter(Boolean) || [];
 
     const metaDataObject = {
       title: fileMetadata.common.title || undefined,
@@ -105,21 +87,8 @@ const handleMetadata = async (files, metadataArray) => {
   await Promise.all(arrayOfMetaData).then((fulfilledValues) => {
     metadataArray.push(...fulfilledValues);
   });
-  console.log("TEST IN SEARCH.JS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-  console.log(metadataArray);
 
-  // ALTERNATIVE WAY WITH DIRECT PROMISES
-  /* const metadataArray = files.map(async (file) => { // parseBlob is async so its returnig a promise i need to create array of promises
-    return parseBlob(file); // so simply return func 
-  });
   console.log(metadataArray);
-  const array1 = await Promise.all(metadataArray); // then here is very carefully 
-  // await Promise.all do not changing an array of Promises its returns a Promise:
-  // Asynchronously fulfilled, when all the promises in the given iterable fulfill. The fulfillment value is an array of fulfillment values
-  // so this promise resolving when all promises in the array became values(resolved)
-  console.log(array1);
-  console.log(array1[0].common.title);
-  return array1;*/
 };
 
 /// Getting new refresh and access tokens
@@ -298,6 +267,7 @@ const searchForTracks = async (metadataArray, access_token) => {
               href: searchObject.href,
             };
           } else {
+            console.log("no match");
             return "no match";
           }
         }

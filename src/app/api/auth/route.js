@@ -40,7 +40,7 @@ export async function POST(req) {
   console.log(responseObj.access_token); // checking
 
   //Cookie part
-  const cookieStorage = cookies();
+  const cookieStorage = await cookies();
   setTokenCookie(cookieStorage, responseObj); // func to set a cookie if a token exists in an auth object
   console.log("TEST COOKIE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
   console.log(cookieStorage.getAll());

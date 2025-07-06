@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import "../styles/HomeStyles.css";
-import {song_colors} from "./constants.js"; // Assuming you have a JSON file with colors
+import {song_colors} from "./constants.js"; 
 function Home() {
   const limit = 100;
   const [data, setData] = useState([]);
@@ -79,7 +79,6 @@ function Home() {
   
 
     if (selectedFiles.length + data.length > limit) {
-      console.log("LIMIT EXCEEDED");
       setIsLimit(true);
     } else {
       Array.from(selectedFiles).forEach((file) => {
@@ -89,8 +88,6 @@ function Home() {
           console.log(`Unsupported file type: ${file.type}`);
         }
       });
-  
-
       setData((prevData) => [...prevData, ...mainArray]);
       console.log(data.length);
     }
@@ -98,9 +95,7 @@ function Home() {
 
   const unauthorizedDrop = (event)=>
     {
-
       event.preventDefault();
-      console.log("dropping")
       setShowUnAthorized(true);
     }
   const scanDirectory = (dirReader, mainArray) => {
@@ -139,11 +134,7 @@ function Home() {
     }
 
  }
- const randomBackground = (index)=>
- {
-  const colorArray = []
-  return colorArray[index%(colorArray.length-1)]
- }
+
   const handleDelete = (event, name) => {
     
     event.preventDefault();
@@ -246,4 +237,3 @@ function Home() {
 
 export default Home;
  
-// дотестити ліміт  
