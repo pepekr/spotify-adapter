@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import querystring from "querystring";
 export async function GET() {
-  const cookieStorage = cookies();
+  const cookieStorage = await cookies();
   const refreshToken = cookieStorage.get("refresh_token");
   if(refreshToken)
     {
