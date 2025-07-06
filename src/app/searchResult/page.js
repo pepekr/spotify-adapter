@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import "../../styles/searchResult.css";
 import { useRouter } from "next/navigation";
-
+import { song_colors } from "../constants.js";
 function searchResult() {
   const songsLimit = 100;
   const [searchedSongs, setSearchedSongs] = useState([]);
@@ -23,30 +23,43 @@ function searchResult() {
   useEffect(() => {
     console.log("LENGTH" + choosedSongsIndexes.length);
   }, [choosedSongsIndexes, preloadSongs]);
-  // console.clear();
+
   return (
-    <div>
+    <div className="search-result-container">
       {choosedSongsIndexes.length >= songsLimit && (
         <p>The limit is {songsLimit}</p>
       )}
       {searchedSongs.length > 0 && (
-        <ul>
+        <ul className="search-list">
           {searchedSongs.map((songOptionsArray, mainSongIndex) => {
             const array = songOptionsArray.map((songOptionObject, index) => {
               const check = searchAdded(mainSongIndex, index);
-              console.log(`CHECK ${mainSongIndex} ${index} `, check);
               return (
-                <div className="choice-div" key={index}>
-                  <li
-                    className={
+                <li
+                  onClick={() => {
+                    choosedSongsIndexes.length < songsLimit && !searchAdded(mainSongIndex, index)
+                      ? addSong(mainSongIndex, index)
+                      : removeSong(mainSongIndex, index);
+                  }}
+                  style={{
+                    backgroundColor: song_colors[index % song_colors.length],
+                  }}
+                  className={"search-item"}
+                  key={index}
+                >
+                  <p
+                    className={`search-item-part ${
                       songOptionObject.isMatched
                         ? "primary-choice-song"
                         : "secondary-choice-song"
-                    }
+                    }`}
                   >
+                    {" "}
                     {songOptionObject.searchObjectName}
-                  </li>
+                  </p>
+
                   <input
+                    className="search-item-part song-checkbox"
                     key={index}
                     type="checkbox"
                     checked={check}
@@ -57,7 +70,7 @@ function searchResult() {
                         : removeSong(mainSongIndex, index);
                     }}
                   ></input>
-                </div>
+                </li>
               );
             });
             console.log(array);
@@ -65,15 +78,18 @@ function searchResult() {
           })}
         </ul>
       )}
-      <button
-        onClick={async () => {
-          await createPlaylist();
-          router.push(`/playlistRedirect?success=${isCreated.current}`);
-        }}
-      >
-        Create playlist
-      </button>
-      <span>Songs:{choosedSongsIndexes.length}</span>
+      <div className="button-container">
+        <span className="song-count">Songs: {choosedSongsIndexes.length}</span>
+        <button
+          className="create-playlist-button"
+          onClick={async () => {
+            await createPlaylist();
+            router.push(`/playlistRedirect?success=${isCreated.current}`);
+          }}
+        >
+          Create playlist
+        </button>
+      </div>
     </div>
   );
 
@@ -112,7 +128,6 @@ function searchResult() {
   }
 
   async function createPlaylist() {
-    // const router = useRouter();
     const finalArray = createFinalArray();
 
     try {

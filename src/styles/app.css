@@ -6,6 +6,12 @@
   font-weight: 500 !important;
   font-style: bold !important;
   color: #fff;
+  scrollbar-width: none;       /* Firefox */
+  -ms-overflow-style: none; 
+}
+
+*::-webkit-scrollbar {
+  display: none;               /* Chrome, Safari, Edge */
 }
 .app-container {
   display: flex; /* so content(page) can use flex 1 */
