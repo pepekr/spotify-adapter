@@ -1,7 +1,8 @@
 import { cookies } from "next/headers";
 export async function POST(req)
 {
-    const originalArrayOfIds = await req.json();
+    const {playlistName, finalArray} = await req.json();
+    const originalArrayOfIds = finalArray;
     const arrayOfIds = originalArrayOfIds.slice(0, 100);
     const cookieStorage = await cookies();
     const authToken = cookieStorage.get("access_token") || cookieStorage.get("refresh_token");
@@ -10,7 +11,7 @@ export async function POST(req)
     if(userId===null){
             return new Response("NO USER ID FOUND", {status:500})
         }
-    const creationResponse = await createPlaylist(authToken.value,userId);
+    const creationResponse = await createPlaylist(authToken.value,userId, playlistName);
     const playlistInfo = await creationResponse.json();
             
     const playlistId = playlistInfo.id;
@@ -19,7 +20,7 @@ export async function POST(req)
             return new Response("NO PLAYLIST ID FOUND", {status:500})
         }
 
-    response =  await addSongs(authToken.value,arrayOfIds, playlistId);
+    response =  await addSongs(authToken.value, arrayOfIds, playlistId);
     console.log(response)
     return response;
 }
@@ -46,7 +47,7 @@ async function getUserId(authToken)
             console.log(error);
         }
     }
-async function createPlaylist(authToken,userId)
+async function createPlaylist(authToken,userId, playlistName)
 {
     try {
         const response = await fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, {
@@ -57,7 +58,7 @@ async function createPlaylist(authToken,userId)
                 Authorization: "Bearer "+ authToken,
             },
             body: JSON.stringify({
-                name: "Test playlist",
+                name: playlistName,
                 description: "smth for a test",
                 public: false,
             })

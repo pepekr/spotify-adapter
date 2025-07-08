@@ -7,14 +7,11 @@ export async function POST(req) {
   const cookieStorage = await cookies();
   let access_token = cookieStorage.get("access_token");
   const refresh_token = cookieStorage.get("refresh_token");
-  console.log("REFRESH TOKEN",refresh_token);
-  console.log(access_token);
   let response;
 
   if (refresh_token && access_token) {
     console.log("running");
     response = await handleFiles(req, files, metadataArray, access_token.value);
-    console.log(metadataArray);
     return response;
   } else if (refresh_token) {
     console.log("running");
@@ -36,7 +33,6 @@ const handleFiles = async (req, files, metadataArray, access_token) => {
     formData.forEach((value) => {
       files.push(value);
     });
-    console.log(files);
     if(files.length<=0)
       {
         console.log(`NO FILES FOR HANDLING: ${error}`);
@@ -67,7 +63,6 @@ const handleMetadata = async (files, metadataArray) => {
   console.log(metadataArray);
   const arrayOfMetaData = files.map(async (file) => {
     const fileMetadata = await parseBlob(file);
-    console.log(fileMetadata);
     const artistsArray = fileMetadata.common?.artists?.filter(Boolean) || [];
 
     const metaDataObject = {
@@ -88,7 +83,6 @@ const handleMetadata = async (files, metadataArray) => {
     metadataArray.push(...fulfilledValues);
   });
 
-  console.log(metadataArray);
 };
 
 /// Getting new refresh and access tokens
@@ -181,9 +175,7 @@ const getNewToken = async (refresh_token, cookieStorage) => {
     thats it -_-
 */
 const searchForTracks = async (metadataArray, access_token) => {
-  // NEED TO CHECK title parse coz it leaves spaces when .join("") ~237 line
   const regex = /\.| |_|-| /g;
-  console.log(access_token);
   const arrayOfSongsSearchResult = await metadataArray.map(async (file) => {
     const title = parseFileName(
       file.title || file.fileName,
@@ -213,25 +205,19 @@ const searchForTracks = async (metadataArray, access_token) => {
               .toLowerCase()
               .replaceAll(regex, "")
           );
-          console.log(isTitle);
           const isDuration =
             file.duration - 10 <=
             searchObject.duration_ms / 1000 <=
             file.duration + 10;
-          console.log(isDuration);
-          console.log(file.artists.join("").toLowerCase());
-          console.log(artistsNameArray.join("").toLowerCase());
           const isArtists = file.artists
             ? containsSubstring(
                 file.artists.join("").toLowerCase(),
                 artistsNameArray.join("").toLowerCase()
               )
             : false;
-          console.log(isArtists);
           const isYear = file.year
             ? file.year === searchObject.album.release_date.slice(0, 4)
             : false;
-          console.log(isYear);
           if (isArtists && isTitle) {
             return {
               // CHANGE COMMENTS ABOUT FUNC (MADE OBJECT WITH LESS INFO)
@@ -256,7 +242,6 @@ const searchForTracks = async (metadataArray, access_token) => {
               href: searchObject.href,
             };
           } else if (isArtists || isTitle || isDuration || isYear) {
-            console.log(searchObject.name);
             return {
               originalFileTitle: title,
               isMatched: false,
@@ -267,7 +252,6 @@ const searchForTracks = async (metadataArray, access_token) => {
               href: searchObject.href,
             };
           } else {
-            console.log("no match");
             return {isMatched: false, originalFileTitle: null};
           }
         }
@@ -279,7 +263,7 @@ const searchForTracks = async (metadataArray, access_token) => {
   const fullfilledSongsSearchResult = await Promise.all(
     arrayOfSongsSearchResult
   );
-
+  console.log(fullfilledSongsSearchResult);
   return fullfilledSongsSearchResult;
 };
 
@@ -312,12 +296,9 @@ const parseFileName = (fileName, arrayOfArtists) => {
   fileName = fileName.replace(regexForsymbols, " ").trim();
   fileName = fileName.replace(/ +/g, " ").trim();
   const firstDot = fileName.indexOf("."); // Use indexOf instead of search,
-  console.log(fileName);
   if (fileName.includes(" ") && firstDot > 0) {
     // needs to delete things like: title.CreatedBySmth
-
     fileName = fileName.slice(0, firstDot);
   }
-  console.log(fileName);
   return fileName;
 };
