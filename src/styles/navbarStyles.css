@@ -65,13 +65,22 @@ button
 .navbar-main-btn:hover
 {
     
-    border-radius: 5px;
+    /* border-radius: 5px; */
     background-color: hsla(0, 0%, 100%, 0.125);
 }
 
+.button-list > button:first-child
+{
+    margin-top: 0;
+}
+
+.button-list > button:last-child
+{
+    margin-bottom: 0;
+}
 .button-list-item,.mobile-button-list-item
 {
-
+padding: 20px;
  position: relative;
  min-width: 100%;   
  width: max-content;
@@ -95,7 +104,7 @@ button
 .button-list-item:hover 
 {
     background-color: rgba(90, 91, 91, 0.277);
-    border-radius: 5px;
+    /* border-radius: 5px; */
 }
 .button-list-item:hover::after
 {
@@ -108,9 +117,8 @@ button
     display: flex;
     flex-direction: column;
     border-radius:5px ;
-    background-color: hsl(0, 0%, 14%);
-    padding: 10px;
-    border: 1px solid hsla(0, 0%, 44%, 0.334);
+    background-color: hsla(283, 91%, 45%, 0.099);
+    border: 1px solid hsla(0, 0%, 100%, 0.125);
     position: absolute;
     left: 50%;
     top: 100%;
