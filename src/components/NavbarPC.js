@@ -29,9 +29,9 @@ function NavbarPC({ isHidden, handleMove,isAuth }) {
         )}
       </div>
 
-      <Link className="navbar-menu-el navbar-main-btn" href="/history">
+      {/* <Link className="navbar-menu-el navbar-main-btn" href="/history">
         History
-      </Link>
+      </Link> */}
 
       <div
         className="navbar-menu-el"

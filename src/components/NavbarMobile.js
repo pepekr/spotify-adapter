@@ -40,12 +40,12 @@ function NavbarMobile({ isHidden, handleMove,isAuth }) {
               />
             </div>
 
-            <Link
+            {/* <Link
               className="navbar-menu-el mobile-navbar-main-btn "
               href="/history"
             >
               History
-            </Link>
+            </Link> */}
           </div>
         )}
       </div>

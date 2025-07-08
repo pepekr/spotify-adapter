@@ -19,7 +19,7 @@ button
     justify-content: center;
     display: flex;
     align-items: center;
-    background-color: hsl(0, 0%, 14%);
+    /* background-color: hsl(0, 0%, 14%);s */
     flex-wrap: wrap; 
     box-sizing: border-box;   
 }
@@ -31,13 +31,13 @@ button
     align-items: center;
     height: 8vh;
     flex: 1;
-    margin-left: 8.04% ;
+    margin-left: 4.04% ;
 }
 
 .navbar-menu, .menu-icon
 {
     height: 8vh;
-    margin-right: 8.04% ;
+    margin-right: 4.04% ;
     display: flex;
     justify-content: right;
     flex: 1; 
