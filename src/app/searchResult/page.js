@@ -7,11 +7,13 @@ function searchResult() {
   const songsLimit = 100;
   const [searchedSongs, setSearchedSongs] = useState([]);
   const [choosedSongsIndexes, setchoosedSongsIndexes] = useState([]);
+  const inputTitleRef = useRef();
   const isCreated = useRef();
   const router = useRouter();
   useEffect(() => {
     if (JSON.parse(sessionStorage.getItem("searched_songs")).length > 0) {
       setSearchedSongs(JSON.parse(sessionStorage.getItem("searched_songs")));
+      console.log(JSON.parse(sessionStorage.getItem("searched_songs")));
     }
   }, []);
   useEffect(() => {
@@ -28,37 +30,45 @@ function searchResult() {
       {searchedSongs.length > 0 && (
         <>
           <label htmlFor="inp" className="inp">
-            <input type="text" id="inp" placeholder="&nbsp;" />
+            <input
+              type="text"
+              id="inp"
+              placeholder="&nbsp;"
+              ref={inputTitleRef}
+            />
             <span className="label">Title</span>
             <span className="focus-bg"></span>
           </label>
           <ul className="search-list">
             {searchedSongs.map((songResults, mainSongIndex) => {
               const array = songResults.options.map(
-                (songOptionObject, index) => {
+                (songOptionObject, optionIndex) => {
                   if (
                     songOptionObject.isMatched === null &&
                     songOptionObject.originalFileTitle === null
                   ) {
                     return null;
                   }
-                  const check = searchAdded(mainSongIndex, index);
+                  const check = searchAdded(mainSongIndex, optionIndex);
+
                   return (
-                    <React.Fragment key={`${mainSongIndex}-${index}`}>
-                      {index === 0 && <div className="org-song-name">{songResults.name}</div>}
+                    <React.Fragment key={`${mainSongIndex}-${optionIndex}`}>
+                      {optionIndex === 0 && (
+                        <div className="org-song-name">{songResults.name}</div>
+                      )}
                       <li
                         onClick={() => {
                           choosedSongsIndexes.length < songsLimit &&
-                          !searchAdded(mainSongIndex, index)
-                            ? addSong(mainSongIndex, index)
-                            : removeSong(mainSongIndex, index);
+                          !searchAdded(mainSongIndex, optionIndex)
+                            ? addSong(mainSongIndex, optionIndex)
+                            : removeSong(mainSongIndex, optionIndex);
                         }}
                         style={{
                           backgroundColor:
-                            song_colors[index % song_colors.length],
+                            song_colors[optionIndex % song_colors.length],
                         }}
                         className={"search-item"}
-                        key={index}
+                        key={optionIndex}
                       >
                         <p
                           className={`search-item-part ${
@@ -73,14 +83,14 @@ function searchResult() {
 
                         <input
                           className="search-item-part song-checkbox"
-                          key={index}
+                          key={optionIndex}
                           type="checkbox"
                           checked={check}
                           onChange={(event) => {
                             event.target.checked &&
                             choosedSongsIndexes.length < songsLimit
-                              ? addSong(mainSongIndex, index)
-                              : removeSong(mainSongIndex, index);
+                              ? addSong(mainSongIndex, optionIndex)
+                              : removeSong(mainSongIndex, optionIndex);
                           }}
                         ></input>
                       </li>
@@ -138,18 +148,24 @@ function searchResult() {
   }
   function createFinalArray() {
     const array = choosedSongsIndexes.map((coords) => {
-      return searchedSongs[coords[0]][coords[1]].options.trackId;
+      return searchedSongs[coords[0]].options[coords[1]].trackId;
     });
-    return array;
+    return array; ///HERE COORDS MISTAKE
   }
 
   async function createPlaylist() {
     const finalArray = createFinalArray();
 
     try {
-      const response = await fetch("api/createPlaylist", {
+      const response = await fetch("api/createPlaylist", { 
+        headers: {
+          "Content-Type": "application/json",
+        },
         method: "POST",
-        body: JSON.stringify(finalArray.slice(0, 100)),
+        body: JSON.stringify({
+          playlistName: inputTitleRef.current.value || "New Playlist",
+          finalArray: finalArray.slice(0, 100),
+        }),
       });
       const reponseText = await response.text();
       if (!response.ok) {
@@ -157,7 +173,6 @@ function searchResult() {
         throw new Error("error in creating: " + reponseText);
       } else {
         isCreated.current = true;
-        console.log(`TEEEEEEEEEEEEST ${reponseText}`);
       }
     } catch (error) {
       console.log(error);
