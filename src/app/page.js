@@ -159,7 +159,7 @@ function Home() {
         method: "POST",
         body: formData,
       });
-      console.log(response);
+  
       if (!response.ok) {
         const errorText = await response.text();
         console.log("Error Response:", errorText);
@@ -170,7 +170,7 @@ function Home() {
         const responseJson = await response.json();
 
         sessionStorage.setItem("searched_songs", JSON.stringify(responseJson));
-        console.log(responseJson);
+
         window.location.replace("/searchResult");
       }
     } catch (error) {
