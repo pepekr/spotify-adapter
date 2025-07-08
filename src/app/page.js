@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import "../styles/HomeStyles.css";
+import "../styles/unauthorized-box.css";
 import {song_colors} from "./constants.js"; 
 function Home() {
   const limit = 100;

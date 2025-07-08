@@ -113,20 +113,7 @@ html, body {
   cursor: pointer;
 } 
 
-.unauthorized-box
-{
-  position: absolute;
-  left: center;
-  top: center;
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  padding: 10px;
-  color:red;
-  z-index: 999;
-  width: 42vw;
-  height: 53vh;
-}
+
 .button-container
 {
   display: flex;
