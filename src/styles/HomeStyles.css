@@ -48,12 +48,11 @@ html, body {
   align-items: normal;
 }
 
-.drop-label
+.drop-label > p
 {
-  font-size: 1.5rem;
+  font-size: clamp(0.8rem, 2vw, 1.5rem);
   width: 100%;
   height: 100%;
-  text-align: center;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -117,7 +116,7 @@ html, body {
 .button-container
 {
   display: flex;
-  position: sticky;
+  /* position: sticky; */
 
 }
 .add-more-files
@@ -141,6 +140,7 @@ html, body {
     height: 70%;
     background: rgba(217, 217, 217, 0.1);
     border: none;
+    justify-content: space-evenly;
   }
   .home{
     box-sizing: border-box;
@@ -161,18 +161,17 @@ html, body {
  
   .mobile-download-image {
     display: block;
-    width: 85%;
-    aspect-ratio: 9 / 5;
-    height: auto;
+    max-width: 50%;
+    height: 50%;
     
   }
   .button-container
   {
-     box-sizing: border-box;
+    box-sizing: border-box;
     height: 10%;
     background-color: #781865;
     margin: 0;
-    position: static;
+    position: sticky;
     width: 100%;
   }
   .button-container > button
@@ -181,19 +180,22 @@ html, body {
     border: none;
     color: #fff;
     font-size: 1.6rem;
-   
+    box-sizing: border-box;
   }
    button.add-more-files
   {
+    box-sizing: border-box;
     width: 30%;
     border-right: 1px solid #ccc;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 0;
   }
   button.add-more-files > img
   {
-    width: 80%;
+    max-width: 100%;
+    height: 100%;
     padding: 0;
     margin: 0; 
   }
@@ -201,7 +203,10 @@ html, body {
   {
     font-size: 1.5rem;
     text-align: left;
-    padding-left: 15%;
+  }
+  .drop-label
+  {
+    width: 50%;
   }
   .motto-div
   {

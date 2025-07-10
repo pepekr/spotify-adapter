@@ -14,31 +14,50 @@
   display: none; /* Chrome, Safari, Edge */
 }
 .app-container {
+  flex: 1;
   display: flex; /* so content(page) can use flex 1 */
   flex-direction: column; /* navbar content footer will be in a column(like it should be) */
   box-sizing: border-box;
-  height: 100vh; /* so it will use all height of the screen */
+  min-height: 100vh; /* so it will use all height of the screen */
+}
+html, body {
+  height: 100%; /* not min-height */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 body {
   box-sizing: border-box;
   margin: 0;
-  background: linear-gradient(119.64deg, #FFA6B7 16.93%, #6414AF 70.08%);
+  background: linear-gradient(119.64deg, #FFA6B7 16.93%, #6414AF 70.08%) fixed;
   background-position: center;
   background-size: cover;
-  height: 100vh;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
+  min-height: 100vh;
+  height: auto;
 }
 
 .content {
+  
+  overflow-y:  auto;
   box-sizing: border-box;
   display: flex; /* so home element(page) will be using all height by flex:1 in home page styles */
   min-height: 0;
-  max-height: 100vh;
   flex: 1 1 0%; /* content will stick footer to the bottom by growing  */
 }
 
 @media (max-width: 650px) {
  body
  {
-  background: linear-gradient(169.32deg, #011C95 2.38%, #99438C 99.17%);
+  background: linear-gradient(169.32deg, #011C95 2.38%, #99438C 99.17%) fixed;
  }
+}
+@media (max-height: 600px)
+{
+  .content
+  {
+    overflow: auto;
+  }
 }
