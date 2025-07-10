@@ -28,7 +28,6 @@ body {
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
-
   height: 100vh;
 }
 
@@ -40,12 +39,35 @@ body {
   min-height: 0;
   flex: 1 1 0%; /* content will stick footer to the bottom by growing  */
 }
-
+.wave
+{
+  z-index: 99;
+  position: absolute;
+  top: 100%;
+  transform: translateY(-100%);
+  width: 100%;
+  padding: 0;
+}
+.w3
+{
+  z-index: -3;
+}
+.w2
+{
+  z-index: -1;
+}
+.w1
+{
+  z-index: -2;
+}
 @media (max-width: 650px) {
  body
  {
   background: linear-gradient(169.32deg, #011C95 2.38%, #99438C 99.17%) fixed;
  }
+  .mobile-hide {
+    display: none !important;
+  }
 }
 @media (max-height: 600px)
 {
