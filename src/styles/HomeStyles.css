@@ -144,6 +144,7 @@ html, body {
   }
   .home{
     box-sizing: border-box;
+    margin: 0;
   }
   .mobile-hide {
     display: none !important;
@@ -171,7 +172,6 @@ html, body {
     height: 10%;
     background-color: #781865;
     margin: 0;
-    position: sticky;
     width: 100%;
   }
   .button-container > button
@@ -201,7 +201,7 @@ html, body {
   }
   .mobile-drop-p
   {
-    font-size: 1.5rem;
+    font-size: 1.5rem !important;
     text-align: left;
   }
   .drop-label
