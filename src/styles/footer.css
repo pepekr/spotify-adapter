@@ -14,7 +14,7 @@
     min-height: fit-content;
     display: flex;
     align-items: center;
-    background-color: hsl(0, 0%, 14%);
+    /* background-color: hsl(0, 0%, 14%); */
     flex-wrap: wrap; 
     justify-content: space-around;
     box-sizing: border-box;

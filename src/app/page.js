@@ -173,11 +173,12 @@ function Home() {
   };
   return (
     <div className="home">
-      { data.length <= 0 &&
-      <div className="motto-div mobile-show">
-        <p className="motto-p mobile-show">Fastest way to spotify world!</p>
-        <img className="motto-img mobile-show" src="/assets/arrowS.svg"></img>
-      </div>}
+      {data.length <= 0 && (
+        <div className="motto-div mobile-show">
+          <p className="motto-p mobile-show">Fastest way to spotify world!</p>
+          <img className="motto-img mobile-show" src="/assets/arrowS.svg"></img>
+        </div>
+      )}
       {isLimit && <p className="board-hint">The limit is {limit} files</p>}
       {showUnathorized && (
         <div
@@ -237,7 +238,8 @@ function Home() {
         >
           <label className="drop-label" htmlFor="song-input">
             <p className="mobile-drop-p">
-              Choose or drop <br className="mobile-show" /> your files <br className="mobile-show"/> here
+              Choose or drop <br className="mobile-show" /> your files{" "}
+              <br className="mobile-show" /> here
             </p>
             <input
               accept="audio/mpeg, audio/mp3, audio/x-m4a"
@@ -285,6 +287,7 @@ function Home() {
           Search it!
         </button>
       </div>
+      
     </div>
   );
 }
