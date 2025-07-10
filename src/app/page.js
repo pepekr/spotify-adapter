@@ -173,10 +173,11 @@ function Home() {
   };
   return (
     <div className="home">
+      { data.length <= 0 &&
       <div className="motto-div mobile-show">
         <p className="motto-p mobile-show">Fastest way to spotify world!</p>
         <img className="motto-img mobile-show" src="/assets/arrowS.svg"></img>
-      </div>
+      </div>}
       {isLimit && <p className="board-hint">The limit is {limit} files</p>}
       {showUnathorized && (
         <div
