@@ -7,6 +7,7 @@
   color: #fff;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none;
+  /* overflow: scroll; */
 }
 
 *::-webkit-scrollbar {
@@ -18,19 +19,38 @@
   box-sizing: border-box;
   height: 100vh; /* so it will use all height of the screen */
 }
+
 body {
   box-sizing: border-box;
   margin: 0;
-  background: linear-gradient(119.64deg, #FFA6B7 16.93%, #6414AF 70.08%);
+  background: linear-gradient(119.64deg, #FFA6B7 16.93%, #6414AF 70.08%) fixed;
   background-position: center;
   background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
   height: 100vh;
 }
 
 .content {
+  
+  overflow-y:  auto;
   box-sizing: border-box;
   display: flex; /* so home element(page) will be using all height by flex:1 in home page styles */
   min-height: 0;
-  max-height: 100vh;
   flex: 1 1 0%; /* content will stick footer to the bottom by growing  */
+}
+
+@media (max-width: 650px) {
+ body
+ {
+  background: linear-gradient(169.32deg, #011C95 2.38%, #99438C 99.17%) fixed;
+ }
+}
+@media (max-height: 600px)
+{
+  .content
+  {
+    overflow: auto;
+  }
 }

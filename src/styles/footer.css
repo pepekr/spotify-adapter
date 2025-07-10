@@ -11,6 +11,7 @@
 .footer
 {   flex: 0 0 auto; /* footer will not grow or shrink, it will be fixed height */
     height: 10vh;
+    min-height: fit-content;
     display: flex;
     align-items: center;
     background-color: hsl(0, 0%, 14%);
@@ -28,4 +29,12 @@
 .footer > *:hover
 {
     text-shadow: 1px 1px 5px hsl(0, 0%, 100%);
+}
+
+
+@media (max-width: 650px) {
+  .footer {
+    display: none
+  }
+
 }
