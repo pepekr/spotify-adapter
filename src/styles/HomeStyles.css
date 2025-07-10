@@ -120,3 +120,107 @@ html, body {
   position: sticky;
 
 }
+.add-more-files
+{
+  width: 70%;
+}
+
+.mobile-download-image, .mobile-show
+{
+ display: none;
+}
+*{
+  margin: 0;
+  padding: 0;  
+}
+
+@media (max-width: 650px) {
+  
+  .container-board {
+    width: 95%;
+    height: 70%;
+    background: rgba(217, 217, 217, 0.1);
+    border: none;
+  }
+  .home{
+    box-sizing: border-box;
+  }
+  .mobile-hide {
+    display: none !important;
+  }
+  .mobile-show
+  {
+    display: block;
+   
+  }
+  .button-search
+  {
+    width: 100%;
+    color: #000;
+  }
+ 
+  .mobile-download-image {
+    display: block;
+    width: 85%;
+    aspect-ratio: 9 / 5;
+    height: auto;
+    
+  }
+  .button-container
+  {
+     box-sizing: border-box;
+    height: 10%;
+    background-color: #781865;
+    margin: 0;
+    position: static;
+    width: 100%;
+  }
+  .button-container > button
+  {
+    background-color: #781865;
+    border: none;
+    color: #fff;
+    font-size: 1.6rem;
+   
+  }
+   button.add-more-files
+  {
+    width: 30%;
+    border-right: 1px solid #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  button.add-more-files > img
+  {
+    width: 80%;
+    padding: 0;
+    margin: 0; 
+  }
+  .mobile-drop-p
+  {
+    font-size: 1.5rem;
+    text-align: left;
+    padding-left: 15%;
+  }
+  .motto-div
+  {
+    margin-top: 10%
+  }
+  .motto-p
+  {
+    font-size: 1.5rem;
+    text-align: center;
+    padding: 0 10%;
+    margin-bottom: 20px;
+  }
+  .motto-img
+  {
+    box-sizing: border-box;
+    margin-top: 50px;
+    width: 85px;
+    height: 43px;
+    margin: 0 auto;
+    display: block;
+  }
+}

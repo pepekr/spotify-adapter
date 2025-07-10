@@ -7,6 +7,7 @@
   color: #fff;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none;
+  /* overflow: scroll; */
 }
 
 *::-webkit-scrollbar {
@@ -33,4 +34,11 @@ body {
   min-height: 0;
   max-height: 100vh;
   flex: 1 1 0%; /* content will stick footer to the bottom by growing  */
+}
+
+@media (max-width: 650px) {
+ body
+ {
+  background: linear-gradient(169.32deg, #011C95 2.38%, #99438C 99.17%);
+ }
 }

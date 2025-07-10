@@ -29,3 +29,11 @@
 {
     text-shadow: 1px 1px 5px hsl(0, 0%, 100%);
 }
+
+
+@media (max-width: 650px) {
+  .footer {
+    display: none
+  }
+
+}
