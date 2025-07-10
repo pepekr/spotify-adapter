@@ -14,18 +14,12 @@
   display: none; /* Chrome, Safari, Edge */
 }
 .app-container {
-  flex: 1;
   display: flex; /* so content(page) can use flex 1 */
   flex-direction: column; /* navbar content footer will be in a column(like it should be) */
   box-sizing: border-box;
-  min-height: 100vh; /* so it will use all height of the screen */
+  height: 100vh; /* so it will use all height of the screen */
 }
-html, body {
-  height: 100%; /* not min-height */
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+
 body {
   box-sizing: border-box;
   margin: 0;
@@ -35,8 +29,7 @@ body {
   background-repeat: no-repeat;
   background-attachment: fixed;
 
-  min-height: 100vh;
-  height: auto;
+  height: 100vh;
 }
 
 .content {
