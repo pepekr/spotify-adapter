@@ -32,21 +32,14 @@ function Home() {
   }, []);
   const handleDragEvents = (event) => {
     event.preventDefault();
-    console.log("DRAG");
   };
 
   const handleDrop = async (event) => {
     event.preventDefault();
-    console.log("handle drop is runnning");
     const mainArray = [];
     const items = event.dataTransfer.items;
-    console.log(items.length);
-    console.log("SUMMURRY", items.length + data.length);
 
     if (items.length + data.length > limit) {
-      console.log("LIMIT");
-      console.log(items.length);
-      console.log("DATA", data.length);
       setIsLimit(true);
     } else {
       const dataPromises = Array.from(items).map((item) => {
@@ -65,7 +58,6 @@ function Home() {
       });
       await Promise.all(dataPromises);
       setData((prevData) => [...prevData, ...mainArray]);
-      console.log(data.length);
     }
   };
 
@@ -233,7 +225,7 @@ function Home() {
         <div
           className={`container-board ${data.length > 0 ? "hidden" : ""}`}
           hidden={data.length > 0 ? true : false}
-          onDrop={isAuthorized ? handleDrop : () => setShowUnAthorized(true)}
+          onDrop={isAuthorized ? handleDrop : (e) => {e.preventDefault(); setShowUnAthorized(true)}}
           onDragOver={handleDragEvents}
         >
           <label className="drop-label" htmlFor="song-input">
