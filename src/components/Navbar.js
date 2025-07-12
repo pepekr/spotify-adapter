@@ -4,8 +4,9 @@ import Link from "next/link";
 import NavbarPC from "./NavbarPC";
 import NavbarMobile from "./NavbarMobile";
 import "../styles/navbarStyles.css";
+import { useAuthContext } from "../app/AuthContext";
 function Navbar() {
-  const [isAuth, setIsAuth] = useState(false);
+  const {isAuthorized, setIsAuthorized} = useAuthContext();
   useEffect(()=>{
     const authFunc = async ()=>
       {
@@ -15,11 +16,11 @@ function Navbar() {
           })
           if(!response.ok)
             {
-              setIsAuth(false);
+              setIsAuthorized(false);
             }
           else
           {
-            setIsAuth(true);
+            setIsAuthorized(true);
           }
       }
       authFunc()
@@ -47,9 +48,8 @@ function Navbar() {
           </Link>
         </div>
 
-        <NavbarMobile isHidden={isHidden} handleMove={handleMove} isAuth={isAuth}/>
-
-        <NavbarPC isHidden={isHidden} handleMove={handleMove} isAuth={isAuth} />
+        <NavbarMobile isHidden={isHidden} handleMove={handleMove} isAuth={isAuthorized}/>
+        <NavbarPC isHidden={isHidden} handleMove={handleMove} isAuth={isAuthorized} />
       </div>
     </>
   );
