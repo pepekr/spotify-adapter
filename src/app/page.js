@@ -2,12 +2,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import "../styles/HomeStyles.css";
 import "../styles/unauthorized-box.css";
+import { useRouter } from 'next/navigation';
 import { song_colors } from "./constants.js";
 import { useAuthContext } from "../app/AuthContext";
 function Home() {
   const { isAuthorized, setIsAuthorized } = useAuthContext();
   const limit = 100;
   const [data, setData] = useState([]);
+  const router = useRouter();
   const [showUnathorized, setShowUnAthorized] = useState(false);
   const [isLimit, setIsLimit] = useState(false);
   const inputElement = useRef();
@@ -157,7 +159,7 @@ function Home() {
 
         sessionStorage.setItem("searched_songs", JSON.stringify(responseJson));
 
-        window.location.replace("/searchResult");
+        router.replace("/searchResult");
       }
     } catch (error) {
       console.error("Error:", error);
@@ -290,10 +292,13 @@ function Home() {
           <img src="/assets/plus-button.svg"></img>
         </button>
         {data.length > 0 && (
-          <button onClick={handleSubmit} className="button-search">
+          <button onClick={handleSubmit} className="button-search mobile-hide">
             Search
           </button>
         )}
+         <button onClick={handleSubmit} className="button-search mobile-show">
+            Search
+          </button>
       </div>
     </div>
   );

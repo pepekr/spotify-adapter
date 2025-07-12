@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-
+import { useRouter } from "next/router";
 export default function Callback() {
   console.log("running");
   useEffect(() => {
@@ -12,11 +12,12 @@ export default function Callback() {
 }
 const processQuery = async () => {
   console.log("running");
+
   const querySearch = new URLSearchParams(window.location.search);
   await sendQuery(querySearch);
-  window.location.href =
-    process.env.NEXT_PUBLIC_API_BASE_URL + window.location.search;
-  /*     +"&querySent=true"; */
+
+  const router = useRouter();
+  router.replace(`/searchResult?${querySearch.toString()}`);
 };
 const sendQuery = async (querySearch) => {
   console.log("runnnig");
