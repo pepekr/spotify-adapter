@@ -3,10 +3,11 @@ import React, { useEffect, useRef, useState } from "react";
 import "../styles/HomeStyles.css";
 import "../styles/unauthorized-box.css";
 import { song_colors } from "./constants.js";
+import { useAuthContext } from "../app/AuthContext";
 function Home() {
+  const { isAuthorized, setIsAuthorized } = useAuthContext();
   const limit = 100;
   const [data, setData] = useState([]);
-  const [isAuthorized, setIsAuthorized] = useState(true);
   const [showUnathorized, setShowUnAthorized] = useState(false);
   const [isLimit, setIsLimit] = useState(false);
   const inputElement = useRef();
@@ -27,9 +28,7 @@ function Home() {
 
     checkAuthorization(); // Call the async function
   }, []);
-  useEffect(() => {
-    console.log(showUnathorized);
-  }, []);
+
   const handleDragEvents = (event) => {
     event.preventDefault();
   };
