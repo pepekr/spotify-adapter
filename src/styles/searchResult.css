@@ -23,7 +23,7 @@
 {
   color: white;
 }
-.search-list
+.search-list-s
 {
   box-sizing: border-box;
   margin-top: 0%;
@@ -34,7 +34,7 @@
   height: 75%;
   min-height: 0;
 }
-.search-item
+.search-item-s
 {
   box-sizing: border-box;
   height: 15%;
@@ -45,12 +45,12 @@
   transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
   margin-bottom: 0.5%;
 }
-.search-item:hover
+.search-item-s:hover
 {
   transform: scale(1.03);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
-.search-item-part
+.search-item-part-s
 {
   position: relative;
   font-size: 1.3rem;
@@ -67,7 +67,7 @@
   margin-right: 10px;
   color: white;
 }
-.button-container
+.button-container-s
 {
   top: 75%;
   display: flex;
@@ -92,7 +92,7 @@
   
   background-color: #F92EAA;
 }
-.song-count
+.song-count-s
 {
   font-size: 1.5rem;
   display: flex;
@@ -196,15 +196,15 @@
     color: #a3196e;
   }
  
-  .search-list, .inp
+  .search-list-s, .inp
   {
     width: 90%;
   }
-  .search-item
+  .search-item-s
   {
     width: 100%;
   }
-  .search-item-part
+  .search-item-part-s
   {
     font-size: 2.8vw;
   }

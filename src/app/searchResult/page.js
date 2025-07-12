@@ -39,7 +39,7 @@ function searchResult() {
             <span className="label">Title</span>
             <span className="focus-bg"></span>
           </label>
-          <ul className="search-list">
+          <ul className="search-list-s">
             {searchedSongs.map((songResults, mainSongIndex) => {
               const array = songResults.options.map(
                 (songOptionObject, optionIndex) => {
@@ -67,11 +67,11 @@ function searchResult() {
                           backgroundColor:
                             song_colors[optionIndex % song_colors.length],
                         }}
-                        className={"search-item"}
+                        className={"search-item-s"}
                         key={optionIndex}
                       >
                         <p
-                          className={`search-item-part ${
+                          className={`search-item-part-s ${
                             songOptionObject.isMatched
                               ? "primary-choice-song"
                               : "secondary-choice-song"
@@ -82,7 +82,7 @@ function searchResult() {
                         </p>
 
                         <input
-                          className="search-item-part song-checkbox"
+                          className="search-item-part-s song-checkbox"
                           key={optionIndex}
                           type="checkbox"
                           checked={check}
@@ -104,8 +104,8 @@ function searchResult() {
           </ul>
         </>
       )}
-      <div className="button-container">
-        <span className="song-count">Songs: {choosedSongsIndexes.length}</span>
+      <div className="button-container-s">
+        <span className="song-count-s">Songs: {choosedSongsIndexes.length}</span>
         <button
           className="create-playlist-button"
           onClick={async () => {
