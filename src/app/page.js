@@ -223,6 +223,9 @@ function Home() {
           </ul>
         )}
         <div
+          onClick={() => {
+            isAuthorized ? inputElement.current.click() : (() => setShowUnAthorized(true))();
+          }}
           className={`container-board ${data.length > 0 ? "hidden" : ""}`}
           hidden={data.length > 0 ? true : false}
           onDrop={isAuthorized ? handleDrop : (e) => {e.preventDefault(); setShowUnAthorized(true)}}
