@@ -121,13 +121,13 @@ body {
 }
 .add-more-files {
   width: 60%;
-  background-color: #F92EAA;
+  background-color: #f92eabb6;
   border: none;
 }
 .button-search
 {
   width: 40%;
-  background-color: #FF70EA;
+  background-color: #ff70eabe;
   color: #fff;
   border: none;
   font-size: 1.2rem;
@@ -135,7 +135,7 @@ body {
   transition: background-color 0.2s ease-in-out;
 }
 .button-search:hover {
-  background-color: #F92EAA;
+  background-color: #f92eabb6;
 }
 .mobile-download-image,
 .mobile-show {

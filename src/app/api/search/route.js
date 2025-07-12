@@ -10,15 +10,12 @@ export async function POST(req) {
   let response;
 
   if (refresh_token && access_token) {
-    console.log("running");
     response = await handleFiles(req, files, metadataArray, access_token.value);
     return response;
   } else if (refresh_token) {
-    console.log("running");
     await getNewToken(refresh_token, cookieStorage);
     access_token = cookieStorage.get("access_token"); // updating token
     response = await handleFiles(req, files, metadataArray, access_token.value);
-    console.log(metadataArray);
     return response;
   } else {
     return new Response("Unauthorized", { status: 400 });
@@ -186,9 +183,12 @@ const searchForTracks = async (metadataArray, access_token) => {
       file.artists ? file.artists.join("+") : ""
     }&type=track&limit=3&offset=0`.toString("base64");
 
+    console.log(Date.now());
+    const a = Date.now();
     const response = await fetch(url, {
       headers: { Authorization: `Bearer ${access_token}` },
     });
+    console.log(Date.now(), a - Date.now());
     if (!response.ok) {
       console.log(`Error in search tracks ${await response.text()}`);
     } else {

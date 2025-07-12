@@ -140,11 +140,12 @@ function Home() {
     });
 
     try {
+      console.log(Date.now());
       const response = await fetch("/api/search", {
         method: "POST",
         body: formData,
       });
-
+      console.log(Date.now());
       if (!response.ok) {
         const errorText = await response.text();
         console.log("Error Response:", errorText);
@@ -290,7 +291,7 @@ function Home() {
         </button>
         {data.length > 0 && (
           <button onClick={handleSubmit} className="button-search">
-            Search it!
+            Search
           </button>
         )}
       </div>

@@ -19,7 +19,8 @@ button
     justify-content: center;
     display: flex;
     align-items: center;
-    /* background-color: hsl(0, 0%, 14%);s */
+    background-color: rgba(97, 0, 153, 0.08);
+    padding: 5px;
     flex-wrap: wrap; 
     box-sizing: border-box;   
 }
