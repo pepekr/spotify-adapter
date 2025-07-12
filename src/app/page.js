@@ -32,21 +32,14 @@ function Home() {
   }, []);
   const handleDragEvents = (event) => {
     event.preventDefault();
-    console.log("DRAG");
   };
 
   const handleDrop = async (event) => {
     event.preventDefault();
-    console.log("handle drop is runnning");
     const mainArray = [];
     const items = event.dataTransfer.items;
-    console.log(items.length);
-    console.log("SUMMURRY", items.length + data.length);
 
     if (items.length + data.length > limit) {
-      console.log("LIMIT");
-      console.log(items.length);
-      console.log("DATA", data.length);
       setIsLimit(true);
     } else {
       const dataPromises = Array.from(items).map((item) => {
@@ -65,7 +58,6 @@ function Home() {
       });
       await Promise.all(dataPromises);
       setData((prevData) => [...prevData, ...mainArray]);
-      console.log(data.length);
     }
   };
 
@@ -231,9 +223,21 @@ function Home() {
           </ul>
         )}
         <div
+          onClick={() => {
+            isAuthorized
+              ? inputElement.current.click()
+              : (() => setShowUnAthorized(true))();
+          }}
           className={`container-board ${data.length > 0 ? "hidden" : ""}`}
           hidden={data.length > 0 ? true : false}
-          onDrop={isAuthorized ? handleDrop : () => setShowUnAthorized(true)}
+          onDrop={
+            isAuthorized
+              ? handleDrop
+              : (e) => {
+                  e.preventDefault();
+                  setShowUnAthorized(true);
+                }
+          }
           onDragOver={handleDragEvents}
         >
           <label className="drop-label" htmlFor="song-input">
@@ -263,16 +267,18 @@ function Home() {
       </div>
 
       <div className="button-container">
-        <button
-          className="add-more-files mobile-hide"
-          onClick={() => {
-            isAuthorized
-              ? inputElement.current.click()
-              : () => setShowUnAthorized(true);
-          }}
-        >
-          Add more Files
-        </button>
+        {data.length > 0 && (
+          <button
+            className="add-more-files mobile-hide"
+            onClick={() => {
+              isAuthorized
+                ? inputElement.current.click()
+                : () => setShowUnAthorized(true);
+            }}
+          >
+            Add more Files
+          </button>
+        )}
         <button
           className="add-more-files mobile-show"
           onClick={() => {
@@ -283,11 +289,12 @@ function Home() {
         >
           <img src="/assets/plus-button.svg"></img>
         </button>
-        <button onClick={handleSubmit} className="button-search">
-          Search it!
-        </button>
+        {data.length > 0 && (
+          <button onClick={handleSubmit} className="button-search">
+            Search it!
+          </button>
+        )}
       </div>
-      
     </div>
   );
 }
