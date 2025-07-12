@@ -224,11 +224,20 @@ function Home() {
         )}
         <div
           onClick={() => {
-            isAuthorized ? inputElement.current.click() : (() => setShowUnAthorized(true))();
+            isAuthorized
+              ? inputElement.current.click()
+              : (() => setShowUnAthorized(true))();
           }}
           className={`container-board ${data.length > 0 ? "hidden" : ""}`}
           hidden={data.length > 0 ? true : false}
-          onDrop={isAuthorized ? handleDrop : (e) => {e.preventDefault(); setShowUnAthorized(true)}}
+          onDrop={
+            isAuthorized
+              ? handleDrop
+              : (e) => {
+                  e.preventDefault();
+                  setShowUnAthorized(true);
+                }
+          }
           onDragOver={handleDragEvents}
         >
           <label className="drop-label" htmlFor="song-input">
@@ -258,16 +267,18 @@ function Home() {
       </div>
 
       <div className="button-container">
-        <button
-          className="add-more-files mobile-hide"
-          onClick={() => {
-            isAuthorized
-              ? inputElement.current.click()
-              : () => setShowUnAthorized(true);
-          }}
-        >
-          Add more Files
-        </button>
+        {data.length > 0 && (
+          <button
+            className="add-more-files mobile-hide"
+            onClick={() => {
+              isAuthorized
+                ? inputElement.current.click()
+                : () => setShowUnAthorized(true);
+            }}
+          >
+            Add more Files
+          </button>
+        )}
         <button
           className="add-more-files mobile-show"
           onClick={() => {
@@ -278,11 +289,12 @@ function Home() {
         >
           <img src="/assets/plus-button.svg"></img>
         </button>
-        <button onClick={handleSubmit} className="button-search">
-          Search it!
-        </button>
+        {data.length > 0 && (
+          <button onClick={handleSubmit} className="button-search">
+            Search it!
+          </button>
+        )}
       </div>
-      
     </div>
   );
 }
